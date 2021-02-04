@@ -1,54 +1,28 @@
 import React from 'react';
 import './App.css';
+import {useSelector} from "react-redux";
+import {selectEvents} from './features/event/EventSlice'
+import List from '@material-ui/core/List';
+import {ListItem, ListItemText, Typography} from "@material-ui/core";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+    const events = useSelector(selectEvents).Events;
+    const eventList = ({events}) => (
+        <>
+            {
+                events.map(event => (<ListItem>
+                    <ListItemText>{event.getTitle()}</ListItemText>
+                </ListItem>))
+            }
+        </>
+    );
+    return (
+        <div className="App">
+            <List>
+                {eventList({events})}
+            </List>
+        </div>
+    );
 }
 
 export default App;
