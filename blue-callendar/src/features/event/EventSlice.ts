@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import eventReader from "./EventReader";
-import CalendarEvent from "./CalendarEvent";
 
 export const eventSlice = createSlice({
     name: 'events',
@@ -17,7 +16,7 @@ export const eventSlice = createSlice({
     },
 });
 
-export const {} = eventSlice.actions;
+// export const {} = eventSlice.actions;
 
 export const selectEvents = (state: any) => state.events;
 

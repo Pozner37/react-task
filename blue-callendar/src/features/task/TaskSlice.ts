@@ -4,7 +4,7 @@ import taskReader from "./TaskReader";
 export const taskSlice = createSlice({
     name: 'tasks',
     initialState: {
-        Taskss: taskReader.getTasks()
+        Tasks: taskReader.getTasks()
     },
     reducers: {
         // decrement: state => {
@@ -16,7 +16,7 @@ export const taskSlice = createSlice({
     },
 });
 
-export const {} = taskSlice.actions;
+// export const {} = taskSlice.actions;
 //
 // // The function below is called a thunk and allows us to perform async logic. It
 // // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
