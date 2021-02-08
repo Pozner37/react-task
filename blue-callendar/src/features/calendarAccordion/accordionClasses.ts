@@ -17,10 +17,13 @@ const useStyles = makeStyles({
         flexBasis: '20%',
     },
     width: {
-        width: '100%'
+        width: '100%',
     },
     divider: {
-      backgroundColor: "GREEN"
+        backgroundColor: "GREEN",
+    },
+    bold: {
+        fontWeight: 'bold',
     },
 });
 
