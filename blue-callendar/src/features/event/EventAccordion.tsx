@@ -1,20 +1,26 @@
 import React from 'react';
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from "@material-ui/core/Typography";
+import useStyles from "../calendarAccordion/accordionClasses";
+import RemoveIcon from '@material-ui/icons/Remove';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import {Accordion, AccordionDetails, AccordionSummary} from "../accordion/customAccordion";
 
 function EventAccordion(props: any) {
     const event = props.event;
+    const classes = useStyles();
     return (
-        <Accordion>
+        <Accordion className={classes.width}>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography>{event.getTitle()}</Typography>
+                <div className={classes.type}><NotificationsIcon/></div>
+                <div className={classes.priority}><RemoveIcon/></div>
+                <div className={classes.title}><Typography>{event.getTitle()}</Typography></div>
+                <div className={classes.other}></div>
+                <div className={classes.actions}></div>
             </AccordionSummary>
             <AccordionDetails>
                 <Typography>
