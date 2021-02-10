@@ -2,21 +2,21 @@ class CalendarEvent {
     id: string;
     title: string;
     description: string;
-    beginningTime: string;
-    endingTime: string;
+    beginningTime: Date;
+    endingTime: Date;
     color: string;
     invitedGuests: string[];
-    notificationTime: string;
+    notificationTime: Date;
 
     constructor(id: string, title: string, description: string, beginningTime: string, endingTime: string, color: string, invitedGuests: string[], notificationTime: string) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.beginningTime = beginningTime;
-        this.endingTime = endingTime;
+        this.beginningTime = new Date(beginningTime);
+        this.endingTime = new Date(endingTime);
         this.color = color;
         this.invitedGuests = invitedGuests;
-        this.notificationTime = notificationTime;
+        this.notificationTime = new Date(notificationTime);
     }
 
     getId = () => this.id;
@@ -33,11 +33,15 @@ class CalendarEvent {
 
     getBeginningTime = () => this.beginningTime;
 
-    setBeginningTime = (beginningTime: string) => this.beginningTime = beginningTime;
+    getSimpleBeginningTime = () => getSimpleTime(this.beginningTime);
+
+    setBeginningTime = (beginningTime: Date) => this.beginningTime = beginningTime;
 
     getEndingTime = () => this.endingTime;
 
-    setEndingTime = (endingTime: string) => this.endingTime = endingTime;
+    getSimpleEndingTime = () => getSimpleTime(this.endingTime);
+
+    setEndingTime = (endingTime: Date) => this.endingTime = endingTime;
 
     getColor = () => this.color;
 
@@ -55,7 +59,17 @@ class CalendarEvent {
 
     getNotificationTime = () => this.notificationTime;
 
-    setNotificationTime = (notificationTime: string) => this.notificationTime = notificationTime;
+    getSimpleNotificationTime = () => getSimpleTime(this.notificationTime);
+
+    setNotificationTime = (notificationTime: Date) => this.notificationTime = notificationTime;
+}
+
+const getSimpleTime = (date: Date) => {
+    return date.getDate() +
+        "/" +  (date.getMonth() + 1) +
+        "/" +  date.getFullYear() +
+        " " +  date.getHours() +
+        ":" +  date.getMinutes();
 }
 
 export default CalendarEvent;

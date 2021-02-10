@@ -25,6 +25,9 @@ const useStyles = makeStyles({
     bold: {
         fontWeight: 'bold',
     },
+    table: {
+        width: '60%',
+    }
 });
 
 export default useStyles;
