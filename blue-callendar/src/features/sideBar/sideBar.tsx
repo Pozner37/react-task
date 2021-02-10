@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, Grid, makeStyles} from "@material-ui/core";
+import {Drawer, makeStyles} from "@material-ui/core";
 
 function SideBar() {
     const sideBar = makeStyles({

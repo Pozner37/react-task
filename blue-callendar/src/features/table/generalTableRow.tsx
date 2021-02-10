@@ -12,11 +12,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import useStyles from "../../assets/classes";
 
 function GeneralTableRow(props: any) {
     const item = props.item;
-    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     return (
         <>
