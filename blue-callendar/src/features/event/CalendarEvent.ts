@@ -1,3 +1,5 @@
+import getSimpleTime from "../../assets/SimpleDate";
+
 class CalendarEvent {
     id: string;
     title: string;
@@ -62,14 +64,6 @@ class CalendarEvent {
     getSimpleNotificationTime = () => getSimpleTime(this.notificationTime);
 
     setNotificationTime = (notificationTime: Date) => this.notificationTime = notificationTime;
-}
-
-const getSimpleTime = (date: Date) => {
-    return date.getDate() +
-        "/" +  (date.getMonth() + 1) +
-        "/" +  date.getFullYear() +
-        " " +  date.getHours() +
-        ":" +  date.getMinutes();
 }
 
 export default CalendarEvent;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Divider, Paper, Table, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
-import useStyles from "../calendarAccordion/accordionClasses";
+import useStyles from "../../assets/classes";
 
 function CalendarTable(props: any) {
     const classes = useStyles();
