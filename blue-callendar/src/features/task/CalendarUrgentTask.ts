@@ -5,7 +5,7 @@ class CalendarUrgentTask extends CalendarTask {
     untilDate: Date;
 
     constructor(id: string, title: string, description: string, estimatedTime: string, status: string, untilDate: string) {
-        super(id, title, description, estimatedTime, status, 'Top');
+        super(id, title, description, estimatedTime, status, 'High');
         this.untilDate = new Date(untilDate);
     }
 

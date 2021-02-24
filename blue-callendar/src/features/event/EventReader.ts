@@ -8,7 +8,7 @@ class EventReader {
         this.events = initEvents();
     }
 
-    getEvents = () => this.events;
+    getEvents = (): CalendarEvent[] => this.events;
 }
 
 const initEvents = () => {

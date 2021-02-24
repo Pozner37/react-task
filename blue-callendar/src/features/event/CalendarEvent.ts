@@ -49,13 +49,7 @@ class CalendarEvent {
 
     setColor = (color: string) => this.color = color;
 
-    getInvitedGuests = () => {
-        if(this.invitedGuests.length === 0) {
-            return "[None   ]";
-        } else {
-            return this.invitedGuests;
-        }
-    }
+    getInvitedGuests = () => this.invitedGuests;
 
     setInvitedGuests = (invitedGuests: string[]) => this.invitedGuests = invitedGuests;
 

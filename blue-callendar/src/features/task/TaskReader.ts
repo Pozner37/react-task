@@ -19,7 +19,7 @@ const initTasks = () => {
     tasks.forEach(task => {
         if (task.status === 'Close') {
             calendarTasks.push(new CalendarCompletedTask(task.id, task.title, task.description, task.estimatedTime, task.priority, task.review!, task.timeSpent!, task.untilDate!));
-        } else if (task.priority === 'Top') {
+        } else if (task.priority === 'High') {
             calendarTasks.push(new CalendarUrgentTask(task.id, task.title, task.description, task.estimatedTime, task.status, task.untilDate!));
         } else {
             calendarTasks.push(new CalendarTask(task.id, task.title, task.description, task.estimatedTime, task.status, task.priority));

@@ -8,23 +8,30 @@ function EventCollapseBody(props: any) {
     const ColoredAvatar = styled(Avatar)({
         backgroundColor: event.getColor()
     });
+    const getInvitedGuests = () => {
+        if(event.getInvitedGuests().length === 0) {
+            return "[None   ]";
+        } else {
+            return event.getInvitedGuests();
+        }
+    }
     return (
-        <TableRow>
-            <TableCell className={classes.borderlessTableCell}>
-                <Typography>Description:&nbsp;{event.getDescription()}</Typography>
-            </TableCell>
-            <TableCell className={classes.sideBorderTableCell}>
-                <Typography>Color:</Typography>
-                <ColoredAvatar> </ColoredAvatar>
-            </TableCell>
-            <TableCell className={classes.sideBorderTableCell}>
-                <Typography>Invited Guests:&nbsp;{event.getInvitedGuests()}</Typography>
-            </TableCell>
-            <TableCell className={classes.borderlessTableCell}>
-                <Typography>Notification
-                    Time:&nbsp;{event.getSimpleNotificationTime()}</Typography>
-            </TableCell>
-        </TableRow>
+            <TableRow>
+                <TableCell className={classes.borderlessTableCell}>
+                    <Typography>Description:&nbsp;{event.getDescription()}</Typography>
+                </TableCell>
+                <TableCell className={classes.sideBorderTableCell}>
+                    <Typography>Color:</Typography>
+                    <ColoredAvatar> </ColoredAvatar>
+                </TableCell>
+                <TableCell className={classes.sideBorderTableCell}>
+                    <Typography>Invited Guests:&nbsp;{getInvitedGuests()}</Typography>
+                </TableCell>
+                <TableCell className={classes.borderlessTableCell}>
+                    <Typography>Notification
+                        Time:&nbsp;{event.getSimpleNotificationTime()}</Typography>
+                </TableCell>
+            </TableRow>
     );
 }
 
