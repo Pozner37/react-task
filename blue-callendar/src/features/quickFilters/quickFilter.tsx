@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button} from "@material-ui/core";
 
-function QuickFilter() {
-
+function QuickFilter(props: any) {
+    const filter = props.filterName;
     return (
         <>
             <Button></Button>

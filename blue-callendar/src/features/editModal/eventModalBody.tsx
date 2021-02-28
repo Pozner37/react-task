@@ -19,7 +19,7 @@ import {useDispatch} from "react-redux";
 
 function EventModalBody(this: any, props: any) {
     const dispatch = useDispatch();
-    const event = props.event;
+    const event = props.item;
     const [invitedGuests, setInvitedGuests] = useState(event.getInvitedGuests());
     const [title, setTitle] = useState(event.getTitle());
     const [color, setColor] = useState(event.getColor());

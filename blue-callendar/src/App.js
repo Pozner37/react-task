@@ -9,7 +9,6 @@ function App() {
     return (
         <div className="App">
             <FilterBar></FilterBar>
-            <GeneralTable></GeneralTable>
             <CreateItemBar/>
             <SideBar></SideBar>
         </div>

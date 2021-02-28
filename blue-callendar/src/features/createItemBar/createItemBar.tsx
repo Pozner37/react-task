@@ -23,7 +23,7 @@ function CreateItemBar () {
     }
 
     const emptyEvent = new CalendarEvent(id,'','',time,time,'BLUE',[''],time);
-    const emptyTask = new CalendarTask(id,'','',time,'','');
+    const emptyTask = new CalendarTask(id,'','','','','');
 
     const eventBody = () => <EventModalBody item={emptyEvent} add={true}/>
     const taskBody = () => <TaskModalBody item={emptyTask} add={true}/>

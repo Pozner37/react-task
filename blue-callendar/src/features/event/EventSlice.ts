@@ -9,8 +9,6 @@ export const eventSlice = createSlice({
     },
     reducers: {
         removeEvent(state, action: PayloadAction<CalendarEvent>) {
-            // const newEventList: CalendarEvent[] = state.Events.filter((event) => event !== action.payload);
-            // return {Events: newEventList};
             state.Events = state.Events.filter((event) => event !== action.payload);
         },
         addEvent(state, action: PayloadAction<CalendarEvent>) {

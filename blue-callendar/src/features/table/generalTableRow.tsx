@@ -37,9 +37,9 @@ function GeneralTableRow(props: any) {
     };
     const modalBody = () => {
         if (item instanceof CalendarEvent){
-            return <EventModalBody event={item}/>;
+            return <EventModalBody item={item}/>;
         } else if (item instanceof CalendarTask){
-            return <TaskModalBody task={item}/>;
+            return <TaskModalBody item={item}/>;
         }
     }
     return (

@@ -33,10 +33,18 @@ function GeneralTable(props: any) {
                          collapseBody={<EventCollapseBody event={event}/>}/>));
 
     const rows = () => {
-        return (<>
-            {taskRows()}
-            {eventRows()}
-        </>);
+        if (props.filter === 'tasks-only') {
+            return taskRows();
+        } else if (props.filter === 'events-only') {
+            return eventRows();
+        } else {
+            return (
+                <>
+                    {taskRows()}
+                    {eventRows()}
+                </>);
+        }
+
     };
 
     return (
