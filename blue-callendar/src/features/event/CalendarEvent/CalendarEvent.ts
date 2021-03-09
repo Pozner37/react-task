@@ -1,9 +1,7 @@
-import getSimpleTime from "../../assets/SimpleDate";
+import getSimpleTime from "../../../assets/SimpleDate";
+import BasicEntity from "../../basicEntity/basicEntity";
 
-class CalendarEvent {
-    id: string;
-    title: string;
-    description: string;
+class CalendarEvent extends BasicEntity {
     beginningTime: Date;
     endingTime: Date;
     color: string;
@@ -11,27 +9,13 @@ class CalendarEvent {
     notificationTime: Date;
 
     constructor(id: string, title: string, description: string, beginningTime: string, endingTime: string, color: string, invitedGuests: string[], notificationTime: string) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
+        super(id, title, description);
         this.beginningTime = new Date(beginningTime);
         this.endingTime = new Date(endingTime);
         this.color = color;
         this.invitedGuests = invitedGuests;
         this.notificationTime = new Date(notificationTime);
     }
-
-    getId = () => this.id;
-
-    setId = (id: string) => this.id = id;
-
-    getTitle = () => this.title;
-
-    setTitle = (title: string) => this.title = title;
-
-    getDescription = () => this.description;
-
-    setDescription = (description: string) => this.description = description;
 
     getBeginningTime = () => this.beginningTime;
 
@@ -50,6 +34,15 @@ class CalendarEvent {
     setColor = (color: string) => this.color = color;
 
     getInvitedGuests = () => this.invitedGuests;
+
+    getInvitedGuestsStringList = () => {
+        return this.invitedGuests.map((guest: string) => {
+            if (guest === this.invitedGuests[this.invitedGuests.length - 1]) {
+                return guest.toString();
+            }
+            return guest.toString() + ", "
+        });
+    };
 
     setInvitedGuests = (invitedGuests: string[]) => this.invitedGuests = invitedGuests;
 

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {FC} from 'react';
 import EditModal from "../editModal/editModal";
-import EventModalBody from "../editModal/eventModalBody";
+import BasicEntity from "../basicEntity/basicEntity";
 
-function CreateButton(props: any) {
+interface CreateButtonProps {
+    item: BasicEntity,
+    buttonTitle: string,
+    add?: boolean
+}
+
+const CreateButton: FC<CreateButtonProps> = ({item, buttonTitle, add = false}) => {
     return (
-        <EditModal body={props.body} icon={props.buttonTitle}></EditModal>
+        <EditModal item={item} icon={buttonTitle} add={true}/>
     );
 }
 

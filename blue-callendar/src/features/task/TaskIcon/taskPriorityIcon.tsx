@@ -1,4 +1,4 @@
-import CalendarTask from "./CalendarTask";
+import CalendarTask from "../CalendarTasks/CalendarTask";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 

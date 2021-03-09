@@ -1,5 +1,5 @@
 import CalendarTask from "./CalendarTask";
-import getSimpleTime from "../../assets/SimpleDate";
+import getSimpleTime from "../../../assets/SimpleDate";
 
 class CalendarUrgentTask extends CalendarTask {
     untilDate: Date;

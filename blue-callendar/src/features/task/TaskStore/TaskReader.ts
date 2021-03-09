@@ -1,7 +1,7 @@
-import mock from '../../assets/mock.json'
-import CalendarTask from "./CalendarTask";
-import CalendarCompletedTask from "./CalendarCompletedTask";
-import CalendarUrgentTask from "./CalendarUrgentTask";
+import mock from '../../../assets/mock.json'
+import CalendarTask from "../CalendarTasks/CalendarTask";
+import CalendarCompletedTask from "../CalendarTasks/CalendarCompletedTask";
+import CalendarUrgentTask from "../CalendarTasks/CalendarUrgentTask";
 
 class TaskReader {
     tasks: CalendarTask[];

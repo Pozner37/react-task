@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FC, ReactElement} from 'react';
 import {
     Box,
     Collapse,
-    IconButton,
+    IconButton, makeStyles,
     Table, TableBody,
     TableCell,
     TableRow, Tooltip,
@@ -12,56 +12,52 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DeleteIcon from "@material-ui/icons/Delete";
 import store from "../../app/store";
-import {removeEvent} from '../event/EventSlice';
-import {removeTask} from '../task/TaskSlice';
-import CalendarEvent from "../event/CalendarEvent";
-import CalendarTask from "../task/CalendarTask";
+import {removeEvent} from '../event/EventStore/EventSlice';
+import {removeTask} from '../task/TaskStore/TaskSlice';
+import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
+import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import EditModal from "../editModal/editModal";
-import EventModalBody from "../editModal/eventModalBody";
-import TaskModalBody from "../editModal/taskModalBody";
 import EditIcon from "@material-ui/icons/Edit";
+import BasicEntity from "../basicEntity/basicEntity";
 
-interface IGeneralTableRowPropsInterface {
-
+interface CalendarTableRowProps {
+    item: BasicEntity,
+    typeIcon: ReactElement,
+    priorityIcon: ReactElement | undefined,
+    other: ReactElement,
+    collapseBody: ReactElement,
 }
 
-function GeneralTableRow(props: any) {
-    const item = props.item;
+const CalendarTableRow: FC<CalendarTableRowProps> = ({item, typeIcon, priorityIcon, other, collapseBody}) => {
+    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const removeItem = () => {
-        if (item instanceof CalendarEvent){
+        if (item instanceof CalendarEvent) {
             store.dispatch(removeEvent(item));
-        } else if (item instanceof CalendarTask){
+        } else if (item instanceof CalendarTask) {
             store.dispatch(removeTask(item));
         }
     };
-    const modalBody = () => {
-        if (item instanceof CalendarEvent){
-            return <EventModalBody item={item}/>;
-        } else if (item instanceof CalendarTask){
-            return <TaskModalBody item={item}/>;
-        }
-    }
     return (
         <>
             <TableBody>
                 <TableRow>
-                    <TableCell component="th" scope="row" align="center">
-                        {props.typeIcon}
+                    <TableCell align="center">
+                        {typeIcon}
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
-                        {props.priorityIcon}
+                    <TableCell align="center">
+                        {priorityIcon}
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
+                    <TableCell align="center">
                         <Typography>{item.getTitle()}</Typography>
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
+                    <TableCell align="center" className={classes.sideBorderTableCell}>
                         <Table size="small">
-                            {props.other}
+                            {other}
                         </Table>
                     </TableCell>
                     <TableCell align="center">
-                        <EditModal body={modalBody()} icon={<EditIcon/>}></EditModal>
+                        <EditModal item={item} icon={<EditIcon/>}></EditModal>
                         <Tooltip title="Delete" arrow>
                             <IconButton onClick={() => removeItem()}>
                                 <DeleteIcon/>
@@ -75,12 +71,12 @@ function GeneralTableRow(props: any) {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                    <TableCell className={classes.tableCell} colSpan={6}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
+                            <Box>
                                 <Table>
                                     <TableBody>
-                                        {props.collapseBody}
+                                        {collapseBody}
                                     </TableBody>
                                 </Table>
                             </Box>
@@ -92,4 +88,16 @@ function GeneralTableRow(props: any) {
     );
 };
 
-export default GeneralTableRow;
+export default CalendarTableRow;
+
+const useStyles = makeStyles({
+    tableCell: {
+        paddingBottom: 0,
+        paddingTop: 0
+    },
+    sideBorderTableCell: {
+        borderBottom: "none",
+        borderRight: "1px solid lightGrey",
+        borderLeft: "1px solid lightGrey"
+    }
+});

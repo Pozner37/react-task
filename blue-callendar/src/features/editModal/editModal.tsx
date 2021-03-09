@@ -1,28 +1,51 @@
-import React from "react";
-import {IconButton, Modal, Tooltip} from "@material-ui/core";
+import React, {FC, ReactElement} from "react";
+import {Button, Modal, Tooltip} from "@material-ui/core";
+import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
+import EventModalBody from "./eventModalBody";
+import CalendarTask from "../task/CalendarTasks/CalendarTask";
+import TaskModalBody from "./taskModalBody";
+import BasicEntity from "../basicEntity/basicEntity";
 
-function EditModal(props: any){
+interface EditModalProps {
+    item: BasicEntity,
+    icon: string | ReactElement,
+    add?: boolean
+}
+
+const EditModal: FC<EditModalProps> = ({item, icon, add = false}) => {
     const [open, setOpen] = React.useState<boolean>(false);
 
-    const handleOpen = () : void => {
+    const handleOpen = (): void => {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClose = (): void => {
         setOpen(false);
     };
+
+    let modalBody = <></>;
+    if (item instanceof CalendarEvent) {
+        if (add) {
+            modalBody = <EventModalBody item={item} add={true} onClose={handleClose}/>
+        } else modalBody = <EventModalBody item={item} onClose={handleClose}/>;
+    } else if (item instanceof CalendarTask) {
+        if (add) {
+            modalBody = <TaskModalBody item={item} add={true} onClose={handleClose}/>
+        } else modalBody = <TaskModalBody item={item} onClose={handleClose}/>;
+    }
+
     return (
         <>
             <Tooltip title="Edit" arrow>
-                <IconButton onClick={() => handleOpen()}>
-                    {props.icon}
-                </IconButton>
+                <Button onClick={() => handleOpen()} style={{backgroundColor: "WHITE"}}>
+                    {icon}
+                </Button>
             </Tooltip>
             <Modal
                 open={open}
                 onClose={handleClose}
             >
-                {props.body}
+                {modalBody}
             </Modal>
         </>
     );

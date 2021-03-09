@@ -1,5 +1,5 @@
-import CalendarEvent from "./CalendarEvent";
-import mock from '../../assets/mock.json'
+import CalendarEvent from "../CalendarEvent/CalendarEvent";
+import mock from '../../../assets/mock.json'
 
 class EventReader {
     events: CalendarEvent[];

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FC, useState} from "react";
 import {useDispatch} from "react-redux";
 import {
     Button,
@@ -12,25 +12,49 @@ import {
     TextField,
     Typography
 } from "@material-ui/core";
-import CalendarUrgentTask from "../task/CalendarUrgentTask";
-import CalendarCompletedTask from "../task/CalendarCompletedTask";
-import CalendarTask from "../task/CalendarTask";
-import {addTask, updateTask} from '../task/TaskSlice';
+import CalendarUrgentTask from "../task/CalendarTasks/CalendarUrgentTask";
+import CalendarCompletedTask from "../task/CalendarTasks/CalendarCompletedTask";
+import CalendarTask from "../task/CalendarTasks/CalendarTask";
+import {addTask, updateTask} from '../task/TaskStore/TaskSlice';
 import {getISOTime} from "../../assets/SimpleDate";
 
+interface TaskModalBodyProps {
+    item: CalendarTask,
+    onClose: () => (void),
+    add?: boolean
+}
 
-function TaskModalBody(props: any) {
+const TaskModalBody: FC<TaskModalBodyProps> = ({item, onClose, add = false}) => {
     const dispatch = useDispatch();
-    const task = props.item;
+    const task = item;
+    const handleClose = onClose;
     const [title, setTitle] = useState(task.getTitle());
     const [description, setDescription] = useState(task.getDescription());
     const [estimatedTime, setEstimatedTime] = useState(task.getEstimatedTime());
     const [status, setStatus] = useState(task.getStatus());
     const [priority, setPriority] = useState(task.getPriority());
-    const [untilDate, setUntilDate] = useState(new Date());
-    const [review, setReview] = useState("");
-    const [timeSpent, setTimeSpent] = useState("");
 
+    const initialUntilDate = () => {
+        if (task instanceof CalendarCompletedTask || task instanceof CalendarUrgentTask) {
+            return getISOTime(task.getUntilDate());
+        }
+        return "";
+    }
+    const initialReview = () => {
+        if (task instanceof CalendarCompletedTask) {
+            return task.getReview();
+        }
+        return "";
+    }
+    const initialTimeSpent = () => {
+        if (task instanceof CalendarCompletedTask) {
+            return task.getTimeSpent();
+        }
+        return "";
+    }
+    const [untilDate, setUntilDate] = useState(initialUntilDate());
+    const [review, setReview] = useState(initialReview());
+    const [timeSpent, setTimeSpent] = useState(initialTimeSpent());
 
     const updateTitle = (event: any) => {
         setTitle(event.target.value);
@@ -59,20 +83,11 @@ function TaskModalBody(props: any) {
 
     const initTask = () => {
         if (status === 'Close') {
-            return new CalendarCompletedTask(task.getId(), title, description, estimatedTime, priority, review, timeSpent, untilDate.toISOString());
+            return new CalendarCompletedTask(task.getId(), title, description, estimatedTime, priority, review, timeSpent, untilDate);
         } else if (priority === 'High') {
-            return new CalendarUrgentTask(task.getId(), title, description, estimatedTime, status, untilDate.toISOString());
+            return new CalendarUrgentTask(task.getId(), title, description, estimatedTime, status, untilDate);
         } else {
             return new CalendarTask(task.getId(), title, description, estimatedTime, status, priority);
-        }
-    };
-
-    const submitForm = () => {
-        const updatedTask = initTask();
-        if (props.add) {
-            dispatch(addTask(updatedTask));
-        } else {
-            dispatch(updateTask(updatedTask));
         }
     };
 
@@ -141,8 +156,18 @@ function TaskModalBody(props: any) {
                 </TableRow>);
         }
     };
+
+    const submitForm = () => {
+        const updatedTask = initTask();
+        if (add) {
+            dispatch(addTask(updatedTask));
+        } else {
+            dispatch(updateTask(updatedTask));
+        }
+        handleClose();
+    };
     return (
-        <>
+        <div>
             <Card>
                 <CardContent>
                     <Table>
@@ -195,9 +220,10 @@ function TaskModalBody(props: any) {
                 </CardContent>
                 <CardActions>
                     <Button onClick={submitForm}>Save</Button>
+                    <Button onClick={handleClose}>Cancel</Button>
                 </CardActions>
             </Card>
-        </>
+        </div>
     );
 }
 

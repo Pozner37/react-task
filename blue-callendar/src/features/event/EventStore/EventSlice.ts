@@ -1,28 +1,27 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import eventReader from "./EventReader";
-import CalendarEvent from "./CalendarEvent";
+import CalendarEvent from "../CalendarEvent/CalendarEvent";
 
 export const eventSlice = createSlice({
     name: 'events',
-    initialState: {
-        Events: eventReader.getEvents()
-    },
+    initialState: eventReader.getEvents()
+    ,
     reducers: {
         removeEvent(state, action: PayloadAction<CalendarEvent>) {
-            state.Events = state.Events.filter((event) => event !== action.payload);
+            return state.filter((event) => event !== action.payload);
         },
         addEvent(state, action: PayloadAction<CalendarEvent>) {
-            state.Events.push(action.payload);
+            state.push(action.payload);
         },
         updateEvent(state, action: PayloadAction<CalendarEvent>) {
-            let newEventList: CalendarEvent[] = state.Events;
+            let newEventList: CalendarEvent[] = state;
             newEventList = newEventList.map(event => {
                 if (event.getId() === action.payload.getId()) {
                     return action.payload;
                 }
                 return event
             });
-            return {Events: newEventList};
+            return newEventList;
         }
     },
 });
