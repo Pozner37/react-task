@@ -25,6 +25,7 @@ const TaskOther: FC<TaskOtherProps> = ({task}) => {
     }
 
     return (
+        <TableBody>
             <TableRow>
                 <TableCell align="center" className={classes.borderlessTableCell}>
                     <Typography>Status:&nbsp;{task.getStatus()}</Typography>
@@ -35,7 +36,9 @@ const TaskOther: FC<TaskOtherProps> = ({task}) => {
                 <TableCell align="center" className={classes.borderlessTableCell}>
                     {extraField(task)}
                 </TableCell>
-            </TableRow>);
+            </TableRow>
+        </TableBody>
+    );
 }
 
 export default TaskOther;

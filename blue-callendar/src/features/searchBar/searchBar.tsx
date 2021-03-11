@@ -1,17 +1,21 @@
 import React, {FC} from 'react';
-import {makeStyles, TextField} from "@material-ui/core";
+import {InputAdornment, makeStyles, TextField} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 
 interface SearchBarProps {
-    onChange: React.Dispatch<React.SetStateAction<string>>,
+    setSearchFilter: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const SearchBar: FC<SearchBarProps> = ({onChange}) => {
+const SearchBar: FC<SearchBarProps> = ({setSearchFilter}) => {
     const classes = useStyles();
     const updateSearchFilter = (event: any) => {
-        onChange(event.target.value.toLowerCase());
+        setSearchFilter(event.target.value.toLowerCase());
     };
     return (
-        <TextField placeholder="search" onChange={updateSearchFilter} variant="outlined" className={classes.searchField}/>
+        <TextField placeholder="search" onChange={updateSearchFilter} variant="outlined" className={classes.searchField}
+                   InputProps={{
+                       startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>
+                   }}/>
     );
 }
 
@@ -19,6 +23,6 @@ export default SearchBar;
 
 const useStyles = makeStyles({
     searchField: {
-        backgroundColor: "white",
+        padding: "15px"
     },
 });

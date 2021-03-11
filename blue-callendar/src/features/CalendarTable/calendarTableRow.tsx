@@ -2,10 +2,13 @@ import React, {FC, ReactElement} from 'react';
 import {
     Box,
     Collapse,
-    IconButton, makeStyles,
-    Table, TableBody,
+    IconButton,
+    makeStyles,
+    Table,
+    TableBody,
     TableCell,
-    TableRow, Tooltip,
+    TableRow,
+    Tooltip,
     Typography,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -16,9 +19,9 @@ import {removeEvent} from '../event/EventStore/EventSlice';
 import {removeTask} from '../task/TaskStore/TaskSlice';
 import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
 import CalendarTask from "../task/CalendarTasks/CalendarTask";
-import EditModal from "../editModal/editModal";
 import EditIcon from "@material-ui/icons/Edit";
 import BasicEntity from "../basicEntity/basicEntity";
+import {Link} from "react-router-dom";
 
 interface CalendarTableRowProps {
     item: BasicEntity,
@@ -26,9 +29,17 @@ interface CalendarTableRowProps {
     priorityIcon: ReactElement | undefined,
     other: ReactElement,
     collapseBody: ReactElement,
+    setEditItem: React.Dispatch<React.SetStateAction<BasicEntity | undefined>>
 }
 
-const CalendarTableRow: FC<CalendarTableRowProps> = ({item, typeIcon, priorityIcon, other, collapseBody}) => {
+const CalendarTableRow: FC<CalendarTableRowProps> = ({
+                                                         item,
+                                                         typeIcon,
+                                                         priorityIcon,
+                                                         other,
+                                                         collapseBody,
+                                                         setEditItem
+                                                     }) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const removeItem = () => {
@@ -57,7 +68,13 @@ const CalendarTableRow: FC<CalendarTableRowProps> = ({item, typeIcon, priorityIc
                         </Table>
                     </TableCell>
                     <TableCell align="center">
-                        <EditModal item={item} icon={<EditIcon/>}></EditModal>
+                        <Link to="/edit">
+                            <Tooltip title="Edit" arrow>
+                                <IconButton onClick={() => setEditItem(item)}>
+                                    <EditIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </Link>
                         <Tooltip title="Delete" arrow>
                             <IconButton onClick={() => removeItem()}>
                                 <DeleteIcon/>

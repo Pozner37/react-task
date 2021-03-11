@@ -5,7 +5,8 @@ import {
     CardActions,
     CardContent,
     Table,
-    TableBody, TableCell,
+    TableBody,
+    TableCell,
     TableRow,
     TextField,
     Typography
@@ -16,17 +17,16 @@ import ChipInput from 'material-ui-chip-input';
 import {addEvent, updateEvent} from '../event/EventStore/EventSlice';
 import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
 import {useDispatch} from "react-redux";
+import {Link} from "react-router-dom";
 
-interface EventModalBodyProps {
+interface EventFormProps {
     item: CalendarEvent,
-    onClose: () => (void),
     add?: boolean
 }
 
-const EventModalBody: FC<EventModalBodyProps> = ({item,onClose,add=false}) => {
+const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
     const event = item;
     const dispatch = useDispatch();
-    const handleClose = onClose;
     const [invitedGuests, setInvitedGuests] = useState(event.getInvitedGuests());
     const [title, setTitle] = useState(event.getTitle());
     const [color, setColor] = useState(event.getColor());
@@ -61,6 +61,12 @@ const EventModalBody: FC<EventModalBodyProps> = ({item,onClose,add=false}) => {
         invitedGuests.splice(index, 1);
         setInvitedGuests(invitedGuests);
     };
+
+    const errorProps = {
+        error: false,
+        helperText: ''
+    }
+
     const submitForm = () => {
         const updatedEvent = new CalendarEvent(event.getId(), title, description, beginningTime, endingTime, color, invitedGuests, notificationTime);
         if (add) {
@@ -68,7 +74,6 @@ const EventModalBody: FC<EventModalBodyProps> = ({item,onClose,add=false}) => {
         } else {
             dispatch(updateEvent(updatedEvent));
         }
-        handleClose();
     };
     return (
         <div>
@@ -79,7 +84,8 @@ const EventModalBody: FC<EventModalBodyProps> = ({item,onClose,add=false}) => {
                             <TableRow>
                                 <TableCell><Typography>Title:</Typography></TableCell>
                                 <TableCell>
-                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle} multiline/>
+                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle}
+                                               multiline {...errorProps}/>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
@@ -152,12 +158,12 @@ const EventModalBody: FC<EventModalBodyProps> = ({item,onClose,add=false}) => {
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Button onClick={submitForm}>Save</Button>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Link to="/"><Button onClick={submitForm}>Save</Button></Link>
+                    <Link to="/"><Button>Cancel</Button></Link>
                 </CardActions>
             </Card>
         </div>
     );
 }
 
-export default EventModalBody;
+export default EventFormBody;

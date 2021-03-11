@@ -4,7 +4,6 @@ import CalendarTableRow from "./calendarTableRow";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import RemoveIcon from "@material-ui/icons/Remove";
 import EventOther from "../event/EventTable/eventOther";
-import EventCollapseBody from "../event/EventTable/eventCollapseBody";
 import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import getTaskTypeIcon from "../task/TaskIcon/taskTypeIcon";
 import getTaskPriorityIcon from "../task/TaskIcon/taskPriorityIcon";
@@ -17,15 +16,17 @@ import {makeStyles, Paper, Table, TableContainer} from "@material-ui/core";
 import CalendarTableHead from "./calendarTableHead";
 import BasicEntity from "../basicEntity/basicEntity";
 import {FilterEnum, filterMap, NoFilter} from "../tableFilters/filters";
+import EventCollapseBody from "../event/EventTable/eventCollapseBody";
 
 interface CalendarTableProps {
     filter: FilterEnum,
     searchFilter: string,
+    setEditItem: React.Dispatch<React.SetStateAction<BasicEntity | undefined>>
 }
 
 type DataType = CalendarEvent | CalendarTask
 
-const CalendarTable: FC<CalendarTableProps> = ({filter, searchFilter}) => {
+const CalendarTable: FC<CalendarTableProps> = ({filter, searchFilter, setEditItem}) => {
     const classes = useStyles();
     const head = ['Type', 'Priority', 'Title', 'Other', 'Actions'];
     const events: CalendarEvent[] = useSelector(selectEvents);
@@ -42,14 +43,14 @@ const CalendarTable: FC<CalendarTableProps> = ({filter, searchFilter}) => {
     };
 
     const getEventRow = (event: CalendarEvent, index: number) => {
-        return <CalendarTableRow key={index} item={event} typeIcon={<NotificationsIcon/>}
+        return <CalendarTableRow key={index} item={event} typeIcon={<NotificationsIcon/>} setEditItem={setEditItem}
                                  priorityIcon={<RemoveIcon/>}
                                  other={<EventOther event={event}/>}
                                  collapseBody={<EventCollapseBody event={event}/>}/>
     }
 
     const getTaskRow = (task: CalendarTask, index: number) => {
-        return <CalendarTableRow key={index} item={task} typeIcon={getTaskTypeIcon(task)}
+        return <CalendarTableRow key={index} item={task} typeIcon={getTaskTypeIcon(task)} setEditItem={setEditItem}
                                  priorityIcon={getTaskPriorityIcon(task)}
                                  other={<TaskOther task={task}/>}
                                  collapseBody={<TaskCollapseBody task={task}/>}/>

@@ -17,17 +17,16 @@ import CalendarCompletedTask from "../task/CalendarTasks/CalendarCompletedTask";
 import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import {addTask, updateTask} from '../task/TaskStore/TaskSlice';
 import {getISOTime} from "../../assets/SimpleDate";
+import {Link} from "react-router-dom";
 
-interface TaskModalBodyProps {
+interface TaskFormProps {
     item: CalendarTask,
-    onClose: () => (void),
     add?: boolean
 }
 
-const TaskModalBody: FC<TaskModalBodyProps> = ({item, onClose, add = false}) => {
+const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
     const dispatch = useDispatch();
     const task = item;
-    const handleClose = onClose;
     const [title, setTitle] = useState(task.getTitle());
     const [description, setDescription] = useState(task.getDescription());
     const [estimatedTime, setEstimatedTime] = useState(task.getEstimatedTime());
@@ -164,7 +163,6 @@ const TaskModalBody: FC<TaskModalBodyProps> = ({item, onClose, add = false}) => 
         } else {
             dispatch(updateTask(updatedTask));
         }
-        handleClose();
     };
     return (
         <div>
@@ -219,12 +217,12 @@ const TaskModalBody: FC<TaskModalBodyProps> = ({item, onClose, add = false}) => 
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Button onClick={submitForm}>Save</Button>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Link to="/"><Button onClick={submitForm}>Save</Button></Link>
+                    <Link to="/"><Button>Cancel</Button></Link>
                 </CardActions>
             </Card>
         </div>
     );
 }
 
-export default TaskModalBody;
+export default TaskFormBody;

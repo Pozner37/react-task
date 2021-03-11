@@ -12,8 +12,7 @@ const FilterBar: FC<FilterBarProps> = ({setFilter, filter}) => {
     const classes = useStyles();
     const {NO_FILTER, EVENTS_ONLY, TASKS_ONLY, HIGH_PRIORITY_TASKS, UNCOMPLETED_TASKS} = FilterEnum;
     return (
-        <>
-            <Typography>Quick Filters:</Typography>
+        <div className={classes.cell}>
             <ToggleButtonGroup value={filter} exclusive className={classes.button}>
                 <ToggleButton value={NO_FILTER} onClick={() => setFilter(NO_FILTER)}>No Filter</ToggleButton>
                 <ToggleButton value={EVENTS_ONLY} onClick={() => setFilter(EVENTS_ONLY)}>Events Only</ToggleButton>
@@ -22,7 +21,7 @@ const FilterBar: FC<FilterBarProps> = ({setFilter, filter}) => {
                 <ToggleButton value={HIGH_PRIORITY_TASKS} onClick={() => setFilter(HIGH_PRIORITY_TASKS)}>High Priority
                     Tasks</ToggleButton>
             </ToggleButtonGroup>
-        </>
+        </div>
     );
 }
 
@@ -31,5 +30,8 @@ export default FilterBar;
 const useStyles = makeStyles({
     button: {
         backgroundColor: 'white',
+    },
+    cell: {
+        padding: "15px"
     },
 });

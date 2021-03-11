@@ -9,13 +9,11 @@ interface TaskCollapseBodyProps {
 const TaskCollapseBody: FC<TaskCollapseBodyProps> = ({task}) => {
     const classes = useStyles();
     return (
-        <TableBody>
             <TableRow>
                 <TableCell className={classes.borderlessTableCell}>
                     <Typography>Description:&nbsp;{task.getDescription()}</Typography>
                 </TableCell>
             </TableRow>
-        </TableBody>
     );
 }
 
