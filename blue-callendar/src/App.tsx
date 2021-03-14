@@ -1,12 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import FilterBar from "./features/tableFilters/filterBar";
-import SearchBar from "./features/searchBar/searchBar";
-import CalendarTable from "./features/CalendarTable/calendarTable";
-import {Card, Fab, makeStyles, Table, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
+import {Card, makeStyles, Table, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
 import {FilterEnum} from './features/tableFilters/filters';
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-import AddIcon from '@material-ui/icons/Add';
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import AddForm from "./features/editForm/addForm";
 import EditForm from "./features/editForm/editForm";
 import BasicEntity from "./features/basicEntity/basicEntity";
@@ -26,25 +22,25 @@ function App() {
                         <TableRow>
                             <TableCell></TableCell>
                             <TableCell className={classes.cell}>
-                                <Card className={classes.card}>
-                                    <Router>
-                                        <div>
-                                            <Switch>
-                                                <Route path="/add">
-                                                    <AddForm/>
-                                                </Route>
-                                                <Route path="/edit">
-                                                    <EditForm item={editItem}/>
-                                                </Route>
-                                                <Route path="/">
-                                                    <HomePage searchFilter={searchFilter} filter={filter}
-                                                              setEditItem={setEditItem} setFilter={setFilter}
-                                                              setSearchFilter={setSearchFilter}/>
-                                                </Route>
-                                            </Switch>
-                                        </div>
-                                    </Router>
-                                </Card>
+                                    <Card className={classes.card}>
+                                        <Router>
+                                            <div>
+                                                <Switch>
+                                                    <Route path="/add">
+                                                        <AddForm/>
+                                                    </Route>
+                                                    <Route path="/edit">
+                                                        <EditForm item={editItem}/>
+                                                    </Route>
+                                                    <Route path="/">
+                                                        <HomePage searchFilter={searchFilter} filter={filter}
+                                                                  setEditItem={setEditItem} setFilter={setFilter}
+                                                                  setSearchFilter={setSearchFilter}/>
+                                                    </Route>
+                                                </Switch>
+                                            </div>
+                                        </Router>
+                                    </Card>
                             </TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -65,5 +61,5 @@ const useStyles = makeStyles({
     },
     card: {
         backgroundColor: "#9ce1ff"
-    }
+    },
 });

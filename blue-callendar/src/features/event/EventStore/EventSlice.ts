@@ -19,7 +19,7 @@ export const eventSlice = createSlice({
                 if (event.getId() === action.payload.getId()) {
                     return action.payload;
                 }
-                return event
+                return event;
             });
             return newEventList;
         }

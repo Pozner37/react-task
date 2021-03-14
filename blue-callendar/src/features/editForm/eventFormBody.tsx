@@ -17,7 +17,7 @@ import ChipInput from 'material-ui-chip-input';
 import {addEvent, updateEvent} from '../event/EventStore/EventSlice';
 import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
 import {useDispatch} from "react-redux";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 interface EventFormProps {
     item: CalendarEvent,
@@ -27,16 +27,36 @@ interface EventFormProps {
 const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
     const event = item;
     const dispatch = useDispatch();
-    const [invitedGuests, setInvitedGuests] = useState(event.getInvitedGuests());
+    const [invitedGuests, setInvitedGuests] = useState([...event.getInvitedGuests()]);
     const [title, setTitle] = useState(event.getTitle());
     const [color, setColor] = useState(event.getColor());
     const [description, setDescription] = useState(event.getDescription());
     const [beginningTime, setBeginningTime] = useState(getISOTime(event.getBeginningTime()));
     const [endingTime, setEndingTime] = useState(getISOTime(event.getEndingTime()));
     const [notificationTime, setNotificationTime] = useState(getISOTime(event.getNotificationTime()));
+    const [invalidForm, setInvalidForm] = useState(false);
+    const [helperText, setHelperText] = useState("");
+    const pageHistory = useHistory();
+
+    const validateForm = () => {
+        if(title.length === 0){
+            setInvalidForm(true);
+            setHelperText("Please enter a title");
+            return false;
+        }
+        return true;
+    }
 
     const updateTitle = (event: any) => {
-        setTitle(event.target.value);
+        if(event.target.value.length > 0) {
+            setTitle(event.target.value);
+            setInvalidForm(false);
+            setHelperText("");
+
+        } else {
+            setInvalidForm(true);
+            setHelperText("Please enter a title");
+        }
     };
     const updateDescription = (event: any) => {
         setDescription(event.target.value);
@@ -61,19 +81,20 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
         invitedGuests.splice(index, 1);
         setInvitedGuests(invitedGuests);
     };
-
-    const errorProps = {
-        error: false,
-        helperText: ''
-    }
-
+    const handleClose = () => {
+        pageHistory.push('/');
+    };
     const submitForm = () => {
-        const updatedEvent = new CalendarEvent(event.getId(), title, description, beginningTime, endingTime, color, invitedGuests, notificationTime);
-        if (add) {
-            dispatch(addEvent(updatedEvent));
-        } else {
-            dispatch(updateEvent(updatedEvent));
+        if(validateForm()) {
+            const updatedEvent = new CalendarEvent(event.getId(), title, description, beginningTime, endingTime, color, invitedGuests, notificationTime);
+            if (add) {
+                dispatch(addEvent(updatedEvent));
+            } else {
+                dispatch(updateEvent(updatedEvent));
+            }
+            pageHistory.push('/')
         }
+
     };
     return (
         <div>
@@ -84,8 +105,8 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
                             <TableRow>
                                 <TableCell><Typography>Title:</Typography></TableCell>
                                 <TableCell>
-                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle}
-                                               multiline {...errorProps}/>
+                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle} error={invalidForm} helperText={helperText}
+                                               multiline/>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
@@ -158,8 +179,8 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Link to="/"><Button onClick={submitForm}>Save</Button></Link>
-                    <Link to="/"><Button>Cancel</Button></Link>
+                    <Button onClick={submitForm}>Save</Button>
+                    <Button onClick={handleClose}>Cancel</Button>
                 </CardActions>
             </Card>
         </div>

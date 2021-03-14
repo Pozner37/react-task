@@ -4,7 +4,9 @@ import {
     Button,
     Card,
     CardActions,
-    CardContent, MenuItem, Select,
+    CardContent,
+    MenuItem,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -17,7 +19,7 @@ import CalendarCompletedTask from "../task/CalendarTasks/CalendarCompletedTask";
 import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import {addTask, updateTask} from '../task/TaskStore/TaskSlice';
 import {getISOTime} from "../../assets/SimpleDate";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 interface TaskFormProps {
     item: CalendarTask,
@@ -32,6 +34,18 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
     const [estimatedTime, setEstimatedTime] = useState(task.getEstimatedTime());
     const [status, setStatus] = useState(task.getStatus());
     const [priority, setPriority] = useState(task.getPriority());
+    const [invalidForm, setInvalidForm] = useState(false);
+    const [helperText, setHelperText] = useState("");
+    const pageHistory = useHistory();
+
+    const validateForm = () => {
+        if(title.length === 0){
+            setInvalidForm(true);
+            setHelperText("Please enter a title");
+            return false;
+        }
+        return true;
+    }
 
     const initialUntilDate = () => {
         if (task instanceof CalendarCompletedTask || task instanceof CalendarUrgentTask) {
@@ -56,7 +70,15 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
     const [timeSpent, setTimeSpent] = useState(initialTimeSpent());
 
     const updateTitle = (event: any) => {
-        setTitle(event.target.value);
+        if (event.target.value.length > 0) {
+            setTitle(event.target.value);
+            setInvalidForm(false);
+            setHelperText("");
+
+        } else {
+            setInvalidForm(true);
+            setHelperText("Please enter a title");
+        }
     };
     const updateDescription = (event: any) => {
         setDescription(event.target.value);
@@ -155,13 +177,18 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
                 </TableRow>);
         }
     };
-
+    const handleClose = () => {
+        pageHistory.push('/');
+    };
     const submitForm = () => {
-        const updatedTask = initTask();
-        if (add) {
-            dispatch(addTask(updatedTask));
-        } else {
-            dispatch(updateTask(updatedTask));
+        if (validateForm()) {
+            const updatedTask = initTask();
+            if (add) {
+                dispatch(addTask(updatedTask));
+            } else {
+                dispatch(updateTask(updatedTask));
+            }
+            pageHistory.push('/');
         }
     };
     return (
@@ -173,7 +200,8 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
                             <TableRow>
                                 <TableCell><Typography>Title:</Typography></TableCell>
                                 <TableCell>
-                                    <TextField defaultValue={task.getTitle()} onChange={updateTitle} multiline/>
+                                    <TextField defaultValue={task.getTitle()} onChange={updateTitle} multiline
+                                               error={invalidForm} helperText={helperText}/>
                                 </TableCell>
                             </TableRow>
                             <TableRow>
@@ -217,8 +245,8 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Link to="/"><Button onClick={submitForm}>Save</Button></Link>
-                    <Link to="/"><Button>Cancel</Button></Link>
+                    <Button onClick={submitForm}>Save</Button>
+                    <Button onClick={handleClose}>Cancel</Button>
                 </CardActions>
             </Card>
         </div>
