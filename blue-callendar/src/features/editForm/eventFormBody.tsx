@@ -3,7 +3,7 @@ import {
     Button,
     Card,
     CardActions,
-    CardContent,
+    CardContent, makeStyles,
     Table,
     TableBody,
     TableCell,
@@ -18,14 +18,17 @@ import {addEvent, updateEvent} from '../event/EventStore/EventSlice';
 import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
+import {gridItemType} from "../../App";
 
 interface EventFormProps {
     item: CalendarEvent,
-    add?: boolean
+    add?: boolean,
+    setCardSize:  React.Dispatch<React.SetStateAction<gridItemType>>
 }
 
-const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
+const EventFormBody: FC<EventFormProps> = ({item, add = false, setCardSize}) => {
     const event = item;
+    const classes = useStyles();
     const dispatch = useDispatch();
     const [invitedGuests, setInvitedGuests] = useState([...event.getInvitedGuests()]);
     const [title, setTitle] = useState(event.getTitle());
@@ -39,20 +42,18 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
     const pageHistory = useHistory();
 
     const validateForm = () => {
-        if(title.length === 0){
+        if (title.length === 0) {
             setInvalidForm(true);
             setHelperText("Please enter a title");
             return false;
         }
         return true;
     }
-
     const updateTitle = (event: any) => {
-        if(event.target.value.length > 0) {
-            setTitle(event.target.value);
+        setTitle(event.target.value);
+        if (event.target.value.length > 0) {
             setInvalidForm(false);
             setHelperText("");
-
         } else {
             setInvalidForm(true);
             setHelperText("Please enter a title");
@@ -83,16 +84,17 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
     };
     const handleClose = () => {
         pageHistory.push('/');
+        setCardSize(12);
     };
     const submitForm = () => {
-        if(validateForm()) {
+        if (validateForm()) {
             const updatedEvent = new CalendarEvent(event.getId(), title, description, beginningTime, endingTime, color, invitedGuests, notificationTime);
             if (add) {
                 dispatch(addEvent(updatedEvent));
             } else {
                 dispatch(updateEvent(updatedEvent));
             }
-            pageHistory.push('/')
+            handleClose();
         }
 
     };
@@ -105,7 +107,8 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
                             <TableRow>
                                 <TableCell><Typography>Title:</Typography></TableCell>
                                 <TableCell>
-                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle} error={invalidForm} helperText={helperText}
+                                    <TextField defaultValue={event.getTitle()} onChange={updateTitle}
+                                               error={invalidForm} helperText={helperText}
                                                multiline/>
                                 </TableCell>
                             </TableRow>
@@ -179,12 +182,21 @@ const EventFormBody: FC<EventFormProps> = ({item, add = false}) => {
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Button onClick={submitForm}>Save</Button>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={submitForm} className={classes.saveButton}>Save</Button>
+                    <Button onClick={handleClose} className={classes.cancelButton}>Cancel</Button>
                 </CardActions>
             </Card>
         </div>
     );
 }
+
+const useStyles = makeStyles({
+    cancelButton: {
+        backgroundColor: "lightgrey"
+    },
+    saveButton: {
+        backgroundColor: "#9ce1ff"
+    }
+});
 
 export default EventFormBody;

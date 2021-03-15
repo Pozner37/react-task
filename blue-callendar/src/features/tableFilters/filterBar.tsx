@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {makeStyles, Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {FilterEnum} from "./filters";
 

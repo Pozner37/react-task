@@ -1,20 +1,21 @@
 import React, {FC, useState} from "react";
-import {Box, Fab, makeStyles, Tab, Tabs} from "@material-ui/core";
+import {Box, makeStyles, Tab, Tabs} from "@material-ui/core";
 import CalendarEvent from "../event/CalendarEvent/CalendarEvent";
 import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import {useSelector} from "react-redux";
 import {selectEvents} from "../event/EventStore/EventSlice";
 import {selectTasks} from "../task/TaskStore/TaskSlice";
-import {Link} from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
 import TabPanel from "./tabPanel";
 import EventFormBody from "./eventFormBody";
 import TaskFormBody from "./taskFormBody";
+import {gridItemType} from "../../App";
 
 interface AddFormProps {
+    setCardSize:  React.Dispatch<React.SetStateAction<gridItemType>>
 }
 
-const AddForm: FC<AddFormProps> = () => {
+const AddForm: FC<AddFormProps> = ({setCardSize}) => {
+    setCardSize(4);
     const classes = useStyles();
     const events = useSelector(selectEvents);
     const tasks = useSelector(selectTasks);
@@ -32,10 +33,10 @@ const AddForm: FC<AddFormProps> = () => {
     const emptyTask = new CalendarTask(id, '', '', '', '', '');
 
     const eventForm = () => {
-        return <EventFormBody item={emptyEvent} add={true}></EventFormBody>
+        return <EventFormBody item={emptyEvent} add={true} setCardSize={setCardSize}></EventFormBody>
     };
     const taskForm = () => {
-        return <TaskFormBody item={emptyTask} add={true}></TaskFormBody>;
+        return <TaskFormBody item={emptyTask} add={true} setCardSize={setCardSize}></TaskFormBody>;
     };
 
     const [value, setValue] = useState(0);

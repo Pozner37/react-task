@@ -4,7 +4,7 @@ import {
     Button,
     Card,
     CardActions,
-    CardContent,
+    CardContent, makeStyles,
     MenuItem,
     Select,
     Table,
@@ -20,15 +20,18 @@ import CalendarTask from "../task/CalendarTasks/CalendarTask";
 import {addTask, updateTask} from '../task/TaskStore/TaskSlice';
 import {getISOTime} from "../../assets/SimpleDate";
 import {useHistory} from "react-router-dom";
+import {gridItemType} from "../../App";
 
 interface TaskFormProps {
     item: CalendarTask,
-    add?: boolean
+    add?: boolean,
+    setCardSize:  React.Dispatch<React.SetStateAction<gridItemType>>
 }
 
-const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
+const TaskFormBody: FC<TaskFormProps> = ({item, add = false, setCardSize}) => {
     const dispatch = useDispatch();
     const task = item;
+    const classes = useStyles();
     const [title, setTitle] = useState(task.getTitle());
     const [description, setDescription] = useState(task.getDescription());
     const [estimatedTime, setEstimatedTime] = useState(task.getEstimatedTime());
@@ -179,6 +182,7 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
     };
     const handleClose = () => {
         pageHistory.push('/');
+        setCardSize(12);
     };
     const submitForm = () => {
         if (validateForm()) {
@@ -188,7 +192,7 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
             } else {
                 dispatch(updateTask(updatedTask));
             }
-            pageHistory.push('/');
+            handleClose();
         }
     };
     return (
@@ -245,12 +249,21 @@ const TaskFormBody: FC<TaskFormProps> = ({item, add = false}) => {
                     </Table>
                 </CardContent>
                 <CardActions>
-                    <Button onClick={submitForm}>Save</Button>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={submitForm} className={classes.saveButton}>Save</Button>
+                    <Button onClick={handleClose} className={classes.cancelButton}>Cancel</Button>
                 </CardActions>
             </Card>
         </div>
     );
 }
+
+const useStyles = makeStyles({
+    cancelButton: {
+        backgroundColor: "lightgrey"
+    },
+    saveButton: {
+        backgroundColor: "#9ce1ff"
+    }
+});
 
 export default TaskFormBody;
